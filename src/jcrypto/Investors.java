@@ -19,8 +19,10 @@ import repast.simphony.util.SimUtilities;
 
 /**
  * @author Lilo
+
  *
  */
+
 public class Investors {
 
 	private double initMoney; //initial amt
@@ -41,6 +43,7 @@ public class Investors {
 		this.initMoney = money;
 	}
 	
+	
 	//basic strategy:
 	//if profiting, add more
 	//if losing, remove to minimize losses. 
@@ -48,10 +51,11 @@ public class Investors {
 	@Watch(watcheeClassName = "jcrypto.Coins", watcheeFieldNames = "priceChange",
 			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void invest() {
+		
 		Random rand = new Random();
 		double heldMoney = 1 + (rand.nextDouble() * money); //invest btwn 1-remaining money 
 		
-		//how to pull  
+		  
 		
 		if(gain_loss(cryptoValue)) { //TODO how current coin value from coin agent?)) {
 			//if profitable, invest random amt more
@@ -67,11 +71,14 @@ public class Investors {
 	}
 	
 	
+	// gain_loss TODO: users buying share of token? or cash investment
+	// crypyoValue = current $ invested by user, coinValue = stock price
 	//false if loss from trading, true if gain
 	public boolean gain_loss(double cryptoValue, double coinValue) {
-		double result = cryptoValue - coinValue;
 		
-		if (result < 0) {
+		double trade = cryptoValue - coinValue; //not at all how this works but revise later lol
+		
+		if (trade < 0) {
 			return false; 
 		}
 		else {
@@ -80,8 +87,10 @@ public class Investors {
 		
 	}
 	
-	//investor looking for more promising coin based on speculation
-	//Look at neighbors in moore neighborhood and choose based on their investments?
+	
+	
+	//findCoin TODO
+	//Look at neighbors in my moore neighborhood and choose coin/investment amt based on their choices
 	public void findCoin() {
 		GridPoint pt = grid.getLocation(this);
 		
@@ -92,12 +101,12 @@ public class Investors {
 		List<GridCell<Investors>> gridCells = nghCreator.getNeighborhood(true);
 		SimUtilities.shuffle(gridCells, RandomHelper.getUniform());
 		
-		GridPoint pointWithLeastZombies = null;
+		GridPoint pointWithMostInvestors = null;
 		int minCount = Integer.MAX_VALUE;
 		
 		for(GridCell<Investors> cell : gridCells) {
 			if (cell.size() < minCount) {
-				pointWithLeastZombies = cell.getPoint();
+				pointWithMostInvestors = cell.getPoint();
 				minCount = cell.size();
 			}
 		}
