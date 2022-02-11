@@ -24,7 +24,7 @@ public class Coins {
 	private Grid<Object> grid;
 	private boolean priceChange;
 	private int age;
-	
+	private Random rnd = new Random();
 	
 	//default constructor
 	public Coins(String name, ContinuousSpace < Object > space , Grid < Object > grid, double value){
@@ -36,31 +36,41 @@ public class Coins {
 	}
 
 	
+	public double getPrice() {
+		return this.value;
+	}
+	
 	
 	//every tick, coin value goes up/down dependent on temp formula
 	@ScheduledMethod(start=1, interval=1)
 	public void step() {
+		System.out.println(this.value);
+
 		age();
 	}
 	
 	
 	//coin value calculated as time passes
 	public void age() {	
+        
+		double ri = rnd.nextDouble();
 		
-		double ri = RandomHelper.nextDoubleFromTo(0, 1);
 		double smallScale = 0;
 		
 		GridPoint pt = grid.getLocation (this);
 		
-		ri = (ri/.01) - .05; //TODO replace hardcoded with vars
+		ri = (ri*.01) - .05 + 1; //TODO replace hardcoded with vars
+		
+		System.out.println("Ri: " + ri);
+		
 		this.value *= ri; 
 		age++;
 		
 		smallScale = this.value/100; //scale down # to show on grid
 		
 		//move coin vertically based on new price, X axis static
-		grid.moveTo(this, (int)pt.getX() , (int)smallScale);
-	
+		//grid.moveByDisplacement(this, 0, (int)smallScale, 0);
+		
 	}
 	
 

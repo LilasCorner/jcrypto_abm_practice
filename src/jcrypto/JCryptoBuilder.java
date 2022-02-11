@@ -45,6 +45,7 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		
 		for(int i = 0; i < coinCount; i++) {
 			value = RandomHelper.nextDoubleFromTo(100, 500);
+			System.out.println(value);
 			context.add(new Coins(nameArray[i], space, grid, value));
 		}
 		
