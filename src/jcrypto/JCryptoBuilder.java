@@ -54,6 +54,9 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 			grid.moveTo(obj, (int)pt.getX(), (int)pt.getY());
 		}
 		
+		
+		//setScheduleTickDelay(100);
+		
 		return context;
 	}
 

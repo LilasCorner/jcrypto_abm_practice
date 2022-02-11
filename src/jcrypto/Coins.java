@@ -59,11 +59,10 @@ public class Coins {
 		
 		GridPoint pt = grid.getLocation (this);
 		
-		ri = (ri*.01) - .05 + 1; //TODO replace hardcoded with vars
+		ri = ((ri * .1)-.05)+1;
+		 
 		
-		System.out.println("Ri: " + ri);
-		
-		this.value *= ri; 
+		this.value = this.value * ri; 
 		age++;
 		
 		smallScale = this.value/100; //scale down # to show on grid
