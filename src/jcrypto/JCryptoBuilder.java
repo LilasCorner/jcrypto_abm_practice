@@ -13,10 +13,12 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.continuous.RandomCartesianAdder;
+import repast.simphony.space.continuous.SimpleCartesianAdder;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.WrapAroundBorders;
+import repast.simphony.ui.RunOptionsModel;
 
 /**
  * @author Lilo
@@ -32,22 +34,27 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		ContinuousSpaceFactory spaceFactory = 
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space =
-		spaceFactory.createContinuousSpace("space", context, new RandomCartesianAdder<Object>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
+		spaceFactory.createContinuousSpace("space", context, new SimpleCartesianAdder<Object>(), new repast.simphony.space.continuous.WrapAroundBorders(), 50, 50);
 		
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
-		
 		Grid<Object> grid = gridFactory.createGrid("grid", context, new GridBuilderParameters<Object>(new WrapAroundBorders(), new SimpleGridAdder<Object>(), true, 50, 50));
+		
 		
 		int coinCount = 1;
 		double value = 0;
 		String[] nameArray = {"BTC", "ETH", "ADA"}; //TODO add random generation lol
-		
+		Coins[] coinAr = new Coins[coinCount];
 		
 		for(int i = 0; i < coinCount; i++) {
+			int xpos = (50 / (coinCount + 1));
 			value = RandomHelper.nextDoubleFromTo(100, 500);
-			System.out.println(value);
-			context.add(new Coins(nameArray[i], space, grid, value));
+			//System.out.println(value); //print current val of coin
+			coinAr[i] = new Coins(nameArray[i], space, grid, value);
+			
+			context.add(coinAr[i]);
+			space.moveTo(coinAr[i], xpos, (int)coinAr[i].getPrice()/10);
 		}
+		
 		
 		for (Object obj : context) {
 			NdPoint pt = space.getLocation(obj);
@@ -55,7 +62,7 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		}
 		
 		
-		//setScheduleTickDelay(100);
+
 		
 		return context;
 	}
