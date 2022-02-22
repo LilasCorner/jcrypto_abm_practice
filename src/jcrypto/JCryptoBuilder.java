@@ -9,6 +9,8 @@ import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
@@ -31,6 +33,9 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		
 		context.setId("jcrypto");
 		
+		Parameters params = RunEnvironment . getInstance (). getParameters ();
+
+		
 		ContinuousSpaceFactory spaceFactory = 
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space =
@@ -47,9 +52,9 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		
 		for(int i = 0; i < coinCount; i++) {
 			int xpos = (50 / (coinCount + 1));
-			value = RandomHelper.nextDoubleFromTo(100, 500);
+			value = params.getDouble("initPrice");
 			//System.out.println(value); //print current val of coin
-			coinAr[i] = new Coins(nameArray[i], space, grid, value);
+			coinAr[i] = new Coins(nameArray[i], space, grid, value,params.getInteger("clampMin"),params.getInteger("clampMax") );
 			
 			context.add(coinAr[i]);
 			space.moveTo(coinAr[i], xpos, (int)coinAr[i].getPrice()/10);
@@ -62,7 +67,7 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 		}
 		
 		
-
+		RunEnvironment.getInstance().endAt(params.getInteger("stopTime"));
 		
 		return context;
 	}

@@ -1,3 +1,1 @@
-<?xml version="1.0"?>
-<sweep runs="1">
-</sweep>
+<?xml version="1.0" ?><sweep runs="1"><parameter name="clampMax" type="constant" constant_type="int" value="5000"></parameter><parameter name="clampMin" type="constant" constant_type="int" value="0"></parameter><parameter name="initPrice" type="constant" constant_type="double" value="100"></parameter><parameter name="stopTime" type="constant" constant_type="int" value="500"></parameter></sweep>

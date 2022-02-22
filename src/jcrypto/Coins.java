@@ -5,7 +5,10 @@ package jcrypto;
 
 import java.util.Random;
 
+import cern.jet.random.Normal;
+import cern.jet.random.Poisson;
 import cern.jet.random.Uniform;
+import cern.jet.random.VonMises;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
@@ -27,15 +30,22 @@ public class Coins {
 	
 	private double MaxPriceIncrease = 1.05;
 	private double MinPriceIncrease = 0.95;
+	private int clampMin;
+	private int clampMax;
 	
 	private Uniform unigen = RandomHelper.createUniform(MinPriceIncrease, MaxPriceIncrease);
+	private Normal normalgen = RandomHelper.createNormal(MinPriceIncrease, MaxPriceIncrease);
+	private Poisson poigen = RandomHelper.createPoisson((MinPriceIncrease + MaxPriceIncrease)/2); //what does "mean" mean here lol
+	private VonMises vongen = RandomHelper.createVonMises((MinPriceIncrease + MaxPriceIncrease)/2); 
 	
 	//default constructor
-	public Coins(String name, ContinuousSpace < Object > space , Grid < Object > grid, double value){
+	public Coins(String name, ContinuousSpace < Object > space , Grid < Object > grid, double value, int clampMin, int clampMax){
 		this.space = space;
 		this.grid = grid;
 		this.name = name;
 		this.value = value;
+		this.clampMax = clampMax;
+		this.clampMin = clampMin;
 	}
 
 	//returns this coin object
@@ -59,7 +69,7 @@ public class Coins {
 	//every tick, coin value goes up/down dependent on temp formula
 	@ScheduledMethod(start=1, interval=1)
 	public void step() {
-		System.out.println(this.value);
+		//System.out.println(this.value);
 
 		age();
 
@@ -71,15 +81,17 @@ public class Coins {
 	public void age() {	
         
 		
-		double ri = unigen.nextDouble();
+		double ri = vongen.nextDouble();
 		double coinPrice = this.value;
 		double oldPrice  = this.value;
 		int smallScale = 0;
 		
 		NdPoint myPoint = space.getLocation (this);
 		
-		//ri = ((ri * .1)-.05)+1;
-		 
+		//ri = ((ri * .1)-.05)+1; rest in pieces python man
+		
+		//clamp time clamp time clamp time
+		//ri = Math.min(Math.max(normalgen.nextDouble(),this.clampMin),this.clampMax);
 		
 		coinPrice = coinPrice * ri; 
 		
