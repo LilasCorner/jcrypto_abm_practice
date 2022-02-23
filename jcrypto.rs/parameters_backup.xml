@@ -5,10 +5,10 @@
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 											/>
-				<parameter name="clampMin" displayName="Clamp Min Value" type="int" 
-						defaultValue="0" 
+				<parameter name="clampMin" displayName="Clamp Min" type="double" 
+						defaultValue="0.5" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 											/>
 				<parameter name="initPrice" displayName="Initial Coin Price" type="double" 
 						defaultValue="100.0" 

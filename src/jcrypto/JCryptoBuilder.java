@@ -54,7 +54,7 @@ public class JCryptoBuilder implements ContextBuilder<Object> {
 			int xpos = (50 / (coinCount + 1));
 			value = params.getDouble("initPrice");
 			//System.out.println(value); //print current val of coin
-			coinAr[i] = new Coins(nameArray[i], space, grid, value,params.getInteger("clampMin"),params.getInteger("clampMax") );
+			coinAr[i] = new Coins(nameArray[i], space, grid, value,params.getDouble("clampMin"),params.getDouble("clampMax") );
 			
 			context.add(coinAr[i]);
 			space.moveTo(coinAr[i], xpos, (int)coinAr[i].getPrice()/10);

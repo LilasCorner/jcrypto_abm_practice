@@ -30,16 +30,16 @@ public class Coins {
 	
 	private double MaxPriceIncrease = 1.05;
 	private double MinPriceIncrease = 0.95;
-	private int clampMin;
-	private int clampMax;
+	private double clampMin;
+	private double clampMax;
 	
 	private Uniform unigen = RandomHelper.createUniform(MinPriceIncrease, MaxPriceIncrease);
-	private Normal normalgen = RandomHelper.createNormal(MinPriceIncrease, MaxPriceIncrease);
+	private Normal normalgen = RandomHelper.createNormal(1, .05);
 	private Poisson poigen = RandomHelper.createPoisson((MinPriceIncrease + MaxPriceIncrease)/2); //what does "mean" mean here lol
 	private VonMises vongen = RandomHelper.createVonMises((MinPriceIncrease + MaxPriceIncrease)/2); 
 	
 	//default constructor
-	public Coins(String name, ContinuousSpace < Object > space , Grid < Object > grid, double value, int clampMin, int clampMax){
+	public Coins(String name, ContinuousSpace < Object > space , Grid < Object > grid, double value, double clampMin, double clampMax){
 		this.space = space;
 		this.grid = grid;
 		this.name = name;
@@ -81,7 +81,7 @@ public class Coins {
 	public void age() {	
         
 		
-		double ri = vongen.nextDouble();
+		double ri = normalgen.nextDouble();
 		double coinPrice = this.value;
 		double oldPrice  = this.value;
 		int smallScale = 0;
@@ -91,6 +91,18 @@ public class Coins {
 		//ri = ((ri * .1)-.05)+1; rest in pieces python man
 		
 		//clamp time clamp time clamp time
+		
+		ri = normalgen.nextDouble();
+		
+		if(ri > clampMax) {
+			ri = clampMax;
+		}
+		
+		if (ri < clampMin) {
+			ri = clampMin;	
+		}
+		
+		
 		//ri = Math.min(Math.max(normalgen.nextDouble(),this.clampMin),this.clampMax);
 		
 		coinPrice = coinPrice * ri; 
